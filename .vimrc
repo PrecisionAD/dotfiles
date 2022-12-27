@@ -1,64 +1,65 @@
-"Disable compatability with vi to avoid issues"
-set nocompatible 
-
-"Vim will detect the type of file in use"
-filetype on
-
-"Enable plugins and load them for the detected file type"
-filetype plugin on
-
-"Load and indent file for the detected file type"
-filetype indent on
-
-"Set t-co=256"
+"Some useful functions for vim"
 syntax on
 
-"Smart indentation"
-set autoindent              "Indent"
-set autoindent smartindent  "Smart indent"
-set expandtab
-set sw=2                    "Number of spaces after auto indent"
-set softtabstop=2
-set tabstop=2               "Number of spaces for tab"
+"Disable compatability with vi to avoid issues"
+set nocompatible
 
-"Show the numbers of lines and cursor in the file"
-set number                  "Show number lines"
-set cursorline              "Show current working line"
-set relativenumber
+"Vim will detect the type of file"
+filetype on
+
+"Enable plugins and load them for the detectec file type"
+filetype plugin on
+
+"Load and indent file for the dectected file type"
+filetype indent on
+
+"Needs to be declared after the plugin after 'gruvbox' or it won't work"
+set background=dark
+set t_Co=256
+
+"Smart indentation"
+set si
+set autoindent        "Auto indent"
+set expandtab
+set sw=2              "Number of spaces after the autoindent"
+set tabstop=2         "Number of spaces with each tab"
+set softtabstop=2
+
+"Show line numbers and cursor line"
+set number
+set cursorline
 
 "Various options"
-set title                   "Show title of file in vim header"
-set incsearch               "Shows matching characters while searching"
-set ignorecase              "Ignores capital letters while searching"
-set smartcase               "Override ignore case if searching for capital letters"
-set showmode                "Shows the mode you are currently in Vim"
-set showmatch               "Matches parenthesis"
-set copyindent              "Copies last indent"
-set hlsearch                "Highlights search"
-set bri                     "Preserves indentation in wrapped text"
-set sc
-set formatoptions+=r        "Asterisk will auto appear"
-set history=500             "Delete undo times"
+set title             "Show file title on vim header file"
+set incsearch         "Highlighs matching characters during search"
+set ignorecase        "Ignore capital letter during search"
+set smartcase         "Override ignore case if searching for capital letters"
+set showmode          "Show the mode you are in VIM"
+set showmatch         "Show matching words/parenthesis during a search"
+set hlsearch          "Highlights the search word"
+set formatoptions+=r
+"set copyindent       "Copies last indent"
+set shortmess+=I
+set history=500
 
-"Ignores these types of files"
-set wildignore=*.doc,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
-"Show if there are any trailing spaces that might cause issues"
+"Ignore these types of files"
+set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv*,.img,*.xlsx
+
+"Show tabs, trailing spaces, etc"
+set listchars=tab:-.,nbsp:',trail:~
 set list
-set listchars=tab:-.,nbsp:',trail:*,extends:>
 
-
-" PLUGINS ------------------------------------------------------------------------------- {{{
+" PLUGINS ------------------------------------------------------------ {{{
 
 call plug#begin()
 
 "Fuzzy search of files"
-"Plug 'junegunn/fzf'. { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
 "Create custom snippets"
-Plug 'SirVer/ultisnips'
+"Plug 'SirVer/ultisnips'
 
 "Syntax checker"
 Plug 'dense-analysis/ale'
@@ -66,149 +67,106 @@ Plug 'dense-analysis/ale'
 "Git support"
 Plug 'tpope/vim-fugitive'
 
-"Color coded termminal"
+"Color coded terminal"
 Plug 'vim-airline/vim-airline'
 
-"Color scheme for Vim"
+"Color-scheme for VIM"
 Plug 'morhetz/gruvbox'
-
-"Ripgrep"
-Plug 'BurntSushi/ripgrep'
-
 
 call plug#end()
 
-" }}}
+"   }}}
 
-"Needs to be declared here after the plugin 'gruvbox' is installed"
-set background=dark
-color gruvbox               "Other option is slate"
+color gruvbox
 
-" MAPPINGS ----------------------------------------------------------------------------- {{{
+" MAPPINGS ------------------------------------------------------------ {{{
 
-"***Everything about editing a file***"
-"Quit the file"
-inoremap <Leader>q <esc> :q <cr>
-
-"Save the file"
-inoremap <Leader>w <esc> :w <cr>
+"Save and quit the file"
+inoremap ;; <esc> :q <cr>
 
 "Exit insert mode"
 inoremap jj <esc>
 
-"Insert brackets for functions, classes, etc"
+"Save the file only"
+inoremap <leader>w <esc> :w <cr>
+
+"Insert matching brackets"
 inoremap {<cr> <cr>{<cr>}<esc>ko
 
-"Start GDB"
-nnoremap gdb :packadd termdebug <bar> :Termdebug <cr>
+"Go to the next file in the quick-fix"
+nnoremap [[ :cnext<cr>
 
-"See error details"
-nnoremap <Leader>a :ALEDetail <cr>
+"Go to the previous file in the quick-fix"
+nnoremap ]] :cprevious<cr>
 
-"Switch to next file from the quickfix"
-nnoremap ]q :cnext<cr>
-"
-"Switch to previous file from the quickfix"
-nnoremap [q :cprevious<cr>
-
-"Space"
+"Maybe not needed"
 nnoremap <space> :
 
+"Leader key"
+nnoremap <leader> \
 
-"***Interacting with tabs/files***"
 "Git blame"
 nnoremap gb :Git<space>blame<cr>
 
 "Split screen vertically"
-nnoremap sv :vsplit<cr> <c-w><c-w> :Ex <cr>
-"
+nnoremap sv :vsplit<cr>
+
 "Split screen horizontally"
 nnoremap sh :sp<cr>
 
-"Move tab to the left or right"
-nnoremap <Leader>1 :tabm<space>-1<cr>
-nnoremap <Leader>2 :tabm<space>+1<cr>
+"Move a tab to the left"
+nnoremap <leader>1 :tabm<space>-1
 
-"Move a line up"
-nnoremap [e :move -2 <cr>
-
-"Move a line down"
-nnoremap ]e :move +1
-
-"Open a new, vertical, or horizontal new tab"
-nnoremap <Leader>n :new <cr>
-nnoremap <Leader>vs :vnew <cr>
-nnoremap <Leader>x :Ex <cr>
-
-"Open ripgrep in new tab to search for patterns. kf = keyword finder"
-nnoremap <Leader>r :tabnew <cr>:Rg!<cr>
-
-"Open fuzzy search on a new tab"
-nnoremap <Leader>z :tabnew <cr>:FZF!<cr>
+"Move a tab to the right"
+nnoremap <leader>2 :tabm<space>+1
 
 "Open a new tab"
-nnoremap <Leader>t :tabnew <cr>
+nnoremap tn :tabnew<cr>
 
-"Close a tab"
-nnoremap <Leader>c :tabclose<cr>
+"Open ripgrep in new tab to search"
+nnoremap <leader>r :tabnew <cr>:Rg!<cr>
 
-"Save file"
-nnoremap <Leader>w :w <cr>
+"Open fuzzy search"
+nnoremap <leader>z :tabnew <cr>:FZF!<cr>
 
-"Quit the file"
-nnoremap <Leader>q :q <cr>
+"Closes a tab"
+nnoremap cnt :tabclose<cr>
 
-"Leader"
-nnoremap <space> :
+"Saves file only"
+nnoremap <leader>w <esc> :w <cr>
 
+"Exit file"
+nnoremap <leader>q <esc> :q <cr>
 
+"Temp"
+nnoremap ;; <esc>:q<cr>
 
-"***Map to open UltiSnipsEdit***"
-nnoremap ue :UltiSnipsEdit!<cr> 2<cr>
+"   }}}
 
-" }}}
+" VIMSCRIPT ------------------------------------------------------------ {{{
 
-
-" VIMSCRIPT ----------------------------------------------------------------------------- {{{
-
-"This enables code folding"
+"This will enable code folding.
+"Use the marker method of folding.
 augroup filetype_vim
-    autocmd!
-    autocmd Filetype vim setlocal foldmethod=marker
+  autocmd!
+  autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
-" }}}
+"   }}}
 
+" MISC ------------------------------------------------------------ {{{
 
-" STATUS LINE --------------------------------------------------------------------------- {{{
-
-
-" }}}
-
-
-" MISC ---------------------------------------------------------------------------------- {{{
-  
-"Plugins need to be added to runtime path before helptags can be generated"
+"Plugins need to be added to runtimepath before helptags can be generated.
 packloadall
 
-"Load all of the helptags now, after plugins have been loaded. All messages and"
-"errors will be ignored."
+"Load all the tags now, errors and messages will be ignored.
 silent! helptags ALL
 
-"These are to trigger snippets"
+"These are for snippets"
 let g:UltiSnipsExapndTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<F12>"
-let g:UltiSnipsJumpBackwardTrigger="<F10>"
 let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
+let g:UltiSnipsSnippetDir='~/.vim/UltiSnips'
 let g:UltiSnipsSnippetDirectories=['UltiSnips']
 
-"To display gdb"
-let g:termdebug_popup = 0
-let g:termdebug_wide = 163
-" }}}
-
-"color slate                  "Current color scheme for vim""
-
-
-
+"   }}}
