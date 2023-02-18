@@ -1,56 +1,55 @@
-"Some useful functions for vim"
-syntax on
-
 "Disable compatability with vi to avoid issues"
-set nocompatible
+set nocompatible 
 
-"Vim will detect the type of file"
+"Vim will detect the type of file in use"
 filetype on
 
-"Enable plugins and load them for the detectec file type"
+"Enable plugins and load them for the detected file type"
 filetype plugin on
 
-"Load and indent file for the dectected file type"
+"Load and indent file for the detected file type"
 filetype indent on
 
-"Needs to be declared after the plugin after 'gruvbox' or it won't work"
-set background=dark
-set t_Co=256
+"Set t-co=256"
+syntax on
 
 "Smart indentation"
-set si
-set autoindent        "Auto indent"
+set autoindent              "Indent"
+set autoindent smartindent  "Smart indent"
 set expandtab
-set sw=2              "Number of spaces after the autoindent"
-set tabstop=2         "Number of spaces with each tab"
+set sw=2                    "Number of spaces after auto indent"
 set softtabstop=2
+set tabstop=2               "Number of spaces for tab"
 
-"Show line numbers and cursor line"
-set number
-set cursorline
+"Show the numbers of lines and cursor in the file"
+set number                  "Show number lines"
+set cursorline              "Show current working line"
+set relativenumber
 
 "Various options"
-set title             "Show file title on vim header file"
-set incsearch         "Highlighs matching characters during search"
-set ignorecase        "Ignore capital letter during search"
-set smartcase         "Override ignore case if searching for capital letters"
-set showmode          "Show the mode you are in VIM"
-set showmatch         "Show matching words/parenthesis during a search"
-set hlsearch          "Highlights the search word"
-set formatoptions+=r
-"set copyindent       "Copies last indent"
-set shortmess+=I
-set history=500
+set title                   "Show title of file in vim header"
+set incsearch               "Shows matching characters while searching"
+set ignorecase              "Ignores capital letters while searching"
+set smartcase               "Override ignore case if searching for capital letters"
+set showmode                "Shows the mode you are currently in Vim"
+set showmatch               "Matches parenthesis"
+set copyindent              "Copies last indent"
+set hlsearch                "Highlights search"
+set bri                     "Preserves indentation in wrapped text"
+set sc
+set formatoptions+=r        "Asterisk will auto appear"
+set history=500             "Delete undo times"
+set updatetime=250
 
+"Ignores these types of files"
+set wildignore=*.doc,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
-"Ignore these types of files"
-set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv*,.img,*.xlsx
-
-"Show tabs, trailing spaces, etc"
-set listchars=tab:-.,nbsp:',trail:~
+"Show if there are any trailing spaces that might cause issues"
 set list
+set listchars=tab:-.,nbsp:',trail:*,extends:>
 
-" PLUGINS ------------------------------------------------------------ {{{
+
+" PLUGINS ------------------------------------------------------------------------------- {{{
 
 call plug#begin()
 
@@ -59,7 +58,7 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
 "Create custom snippets"
-"Plug 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips'
 
 "Syntax checker"
 Plug 'dense-analysis/ale'
@@ -67,106 +66,202 @@ Plug 'dense-analysis/ale'
 "Git support"
 Plug 'tpope/vim-fugitive'
 
-"Color coded terminal"
+"Shows additions, modifications, and deletions using git"
+Plug 'airblade/vim-gitgutter'
+
+"Color coded termminal"
 Plug 'vim-airline/vim-airline'
 
-"Color-scheme for VIM"
+"Shows structure of members/functions"
+Plug 'majutsushi/tagbar'
+
+"Color schemes for Vim"
+"gruvbox"
 Plug 'morhetz/gruvbox'
+"everforest"
+Plug 'sainnhe/everforest'
+"molokai"
+Plug 'tomasr/molokai'
+"sonokai"
+Plug 'sainnhe/sonokai'
+"srcery"
+Plug 'srcery-colors/srcery-vim'
+
+"Auto-Complete"
+Plug 'valloric/youcompleteme'
+
+"Ripgrep"
+Plug 'BurntSushi/ripgrep'
+
 
 call plug#end()
 
-"   }}}
+" }}}
 
-color gruvbox
+"Needs to be declared here after the plugin 'gruvbox' is installed"
+set background=dark
+"color gruvbox               "Other option is slate"
+color everforest               "Other option is slate"
 
-" MAPPINGS ------------------------------------------------------------ {{{
+" MAPPINGS ----------------------------------------------------------------------------- {{{
 
-"Save and quit the file"
-inoremap ;; <esc> :q <cr>
+"***Everything about editing a file***"
+"Quit the file"
+inoremap <Leader>q <esc> :q <cr>
+
+"Save the file"
+inoremap <Leader>w <esc> :w <cr>
 
 "Exit insert mode"
 inoremap jj <esc>
 
-"Save the file only"
-inoremap <leader>w <esc> :w <cr>
-
-"Insert matching brackets"
+"Insert brackets for functions, classes, etc"
 inoremap {<cr> <cr>{<cr>}<esc>ko
 
-"Go to the next file in the quick-fix"
-nnoremap [[ :cnext<cr>
+"Start GDB"
+nnoremap gdb :packadd termdebug <bar> :Termdebug <cr>
 
-"Go to the previous file in the quick-fix"
-nnoremap ]] :cprevious<cr>
+"See error details"
+nnoremap <Leader>a :ALEDetail <cr>
 
-"Maybe not needed"
+"Switch to next file from the quickfix"
+nnoremap ]q :cnext<cr>
+"
+"Switch to previous file from the quickfix"
+nnoremap [q :cprevious<cr>
+
+"Space"
 nnoremap <space> :
 
-"Leader key"
-nnoremap <leader> \
 
+"***Interacting with tabs/files***"
 "Git blame"
 nnoremap gb :Git<space>blame<cr>
 
 "Split screen vertically"
-nnoremap sv :vsplit<cr>
-
+nnoremap sv :vsplit<cr> <c-w><c-w> :Ex <cr>
+"
 "Split screen horizontally"
 nnoremap sh :sp<cr>
 
-"Move a tab to the left"
-nnoremap <leader>1 :tabm<space>-1
+"Move tab to the left or right"
+nnoremap <Leader>1 :tabm<space>-1<cr>
+nnoremap <Leader>2 :tabm<space>+1<cr>
 
-"Move a tab to the right"
-nnoremap <leader>2 :tabm<space>+1
+"Move a line up"
+nnoremap [e :move -2 <cr>
+
+"Move a line down"
+nnoremap ]e :move +1 <cr>
+
+"Open a new, vertical, or horizontal new tab"
+nnoremap <Leader>n :new <bar> :Files! <cr>
+nnoremap <Leader>vs :vnew <bar> :Files! <cr>
+
+"Open ripgrep in new tab to search for patterns. kf = keyword finder"
+nnoremap <Leader>r :tabnew <cr>:Rg!<cr>
+
+"Open fuzzy search on a new tab"
+nnoremap <Leader>z :tabnew <cr>:FZF!<cr>
 
 "Open a new tab"
-nnoremap tn :tabnew<cr>
+nnoremap <Leader>t :tabnew <cr>
 
-"Open ripgrep in new tab to search"
-nnoremap <leader>r :tabnew <cr>:Rg!<cr>
+"Close a tab"
+nnoremap <Leader>c :tabclose<cr>
 
-"Open fuzzy search"
-nnoremap <leader>z :tabnew <cr>:FZF!<cr>
+"Save file"
+nnoremap <Leader>w :w <cr>
 
-"Closes a tab"
-nnoremap cnt :tabclose<cr>
+"Quit the file"
+nnoremap <Leader>q :q <cr>
 
-"Saves file only"
-nnoremap <leader>w <esc> :w <cr>
+"Leader"
+nnoremap <space> :
 
-"Exit file"
-nnoremap <leader>q <esc> :q <cr>
 
-"Temp"
-nnoremap ;; <esc>:q<cr>
+"*** Resize window ***"
+nnoremap <a-right> <c-w>>
+nnoremap <a-left> <c-w><
+nnoremap <a-up> <c-w>+
+nnoremap <a-down> <c-w>-
 
-"   }}}
 
-" VIMSCRIPT ------------------------------------------------------------ {{{
+"*** Map to open UltiSnipsEdit ***"
+nnoremap ue :UltiSnipsEdit!<cr> 2<cr>
 
-"This will enable code folding.
-"Use the marker method of folding.
+
+"*** GitGutter ***"
+"Open hunk preview window"
+inoremap <Leader>h <esc> :GitGutterPreviewHunk <cr>
+nnoremap <Leader>h :GitGutterPreviewHunk <cr>
+
+
+" }}}
+
+
+" VIMSCRIPT ----------------------------------------------------------------------------- {{{
+
+"This enables code folding"
 augroup filetype_vim
-  autocmd!
-  autocmd FileType vim setlocal foldmethod=marker
+    autocmd!
+    autocmd Filetype vim setlocal foldmethod=marker
 augroup END
 
-"   }}}
+" }}}
 
-" MISC ------------------------------------------------------------ {{{
 
-"Plugins need to be added to runtimepath before helptags can be generated.
+" STATUS LINE --------------------------------------------------------------------------- {{{
+
+"Git gutter"
+function! GitStatus()
+  let [a, m, r] = GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
+set statusline+=%{GitStatus()}
+
+" }}}
+
+
+" MISC ---------------------------------------------------------------------------------- {{{
+
+"Plugins need to be added to runtime path before helptags can be generated"
 packloadall
 
-"Load all the tags now, errors and messages will be ignored.
+"Load all of the helptags now, after plugins have been loaded. All messages and"
+"errors will be ignored."
 silent! helptags ALL
 
-"These are for snippets"
+
+"These are to trigger snippets"
 let g:UltiSnipsExapndTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<F12>"
+let g:UltiSnipsJumpBackwardTrigger="<F10>"
 let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsSnippetDir='~/.vim/UltiSnips'
+let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
 let g:UltiSnipsSnippetDirectories=['UltiSnips']
 
-"   }}}
+
+"To display gdb"
+let g:termdebug_popup = 0
+let g:termdebug_wide = 163
+
+
+"*** Comment blocks of code at once ***"
+autocmd FileType c,cpp setlocal commentstring=//\ %s
+
+
+"*** Git Gutter Customization ***"
+highlight GitgutterAdd guifg=#009900 ctermfg=Green
+highlight GitgutterChange guifg=#bbbb00 ctermfg=Yellow
+highlight GitgutterDelete guifg=#ff2222 ctermfg=Red
+let g:gitgutter_enabled = 1
+let g:gitgutter_map_keys = 0
+let g:gitgutter_async = 0
+let g:gitgutter_grep = ''
+
+" }}}
+
+
+
+
