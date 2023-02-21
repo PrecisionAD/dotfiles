@@ -1,5 +1,8 @@
 "Disable compatability with vi to avoid issues"
-set nocompatible 
+set nocompatible
+
+"Delete while in insert mode with backspace"
+set backspace=indent,eol,start
 
 "Vim will detect the type of file in use"
 filetype on
@@ -75,6 +78,10 @@ Plug 'vim-airline/vim-airline'
 "Shows structure of members/functions"
 Plug 'majutsushi/tagbar'
 
+"SuperTab"
+Plug 'ervandew/supertab'
+
+
 "Color schemes for Vim"
 "gruvbox"
 Plug 'morhetz/gruvbox'
@@ -100,12 +107,12 @@ call plug#end()
 
 "Needs to be declared here after the plugin 'gruvbox' is installed"
 set background=dark
-"color gruvbox               "Other option is slate"
-color everforest               "Other option is slate"
+" color gruvbox
+color everforest
 
 " MAPPINGS ----------------------------------------------------------------------------- {{{
 
-"***Everything about editing a file***"
+"*** Everything about editing a file ***"
 "Quit the file"
 inoremap <Leader>q <esc> :q <cr>
 
@@ -134,7 +141,7 @@ nnoremap [q :cprevious<cr>
 nnoremap <space> :
 
 
-"***Interacting with tabs/files***"
+"*** Interacting with tabs/files ***"
 "Git blame"
 nnoremap gb :Git<space>blame<cr>
 
@@ -155,8 +162,8 @@ nnoremap [e :move -2 <cr>
 nnoremap ]e :move +1 <cr>
 
 "Open a new, vertical, or horizontal new tab"
-nnoremap <Leader>n :new <bar> :Files! <cr>
-nnoremap <Leader>vs :vnew <bar> :Files! <cr>
+nnoremap <Leader>n :new <bar>:Files!<cr>
+nnoremap <Leader>vs :vnew <bar>:Files!<cr>
 
 "Open ripgrep in new tab to search for patterns. kf = keyword finder"
 nnoremap <Leader>r :tabnew <cr>:Rg!<cr>
@@ -175,6 +182,9 @@ nnoremap <Leader>w :w <cr>
 
 "Quit the file"
 nnoremap <Leader>q :q <cr>
+
+"Remove trailing white spaces"
+nnoremap <F5> :let _s=@/ <bar> :%s/\s\+$//e <bar> :let @/=_s <bar> <cr>
 
 "Leader"
 nnoremap <space> :
@@ -214,11 +224,11 @@ augroup END
 " STATUS LINE --------------------------------------------------------------------------- {{{
 
 "Git gutter"
-function! GitStatus()
-  let [a, m, r] = GitGutterGetHunkSummary()
-  return printf('+%d ~%d -%d', a, m, r)
-endfunction
-set statusline+=%{GitStatus()}
+" function! GitStatus()
+"   let [a, m, r] = GitGutterGetHunkSummary()
+"   return printf('+%d ~%d -%d', a, m, r)
+" endfunction
+" set statusline+=%{GitStatus()}
 
 " }}}
 
@@ -255,10 +265,16 @@ autocmd FileType c,cpp setlocal commentstring=//\ %s
 highlight GitgutterAdd guifg=#009900 ctermfg=Green
 highlight GitgutterChange guifg=#bbbb00 ctermfg=Yellow
 highlight GitgutterDelete guifg=#ff2222 ctermfg=Red
-let g:gitgutter_enabled = 1
-let g:gitgutter_map_keys = 0
-let g:gitgutter_async = 0
-let g:gitgutter_grep = ''
+" let g:gitgutter_enabled = 1
+" let g:gitgutter_map_keys = 0
+" let g:gitgutter_async = 0
+" let g:gitgutter_grep = ''
+
+
+"*** Make YCM compatible with UltiSnips ***"
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
 
 " }}}
 
