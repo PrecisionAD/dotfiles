@@ -8,10 +8,7 @@ alias cpp='cd ~/hobbies/c++/'
 alias rc='vim ~/.vimrc'
 
 #alias to open this directory
-alias bp='vim ~/.bash_profile'
-
-#alias to connect to zeus
-alias z='ssh zeus'
+alias ba='vim ~/.bash_aliases'
 
 #alias to update packages
 alias update='echo timetocode | sudo -S apt-get update'
