@@ -8,16 +8,17 @@ filetype plugin on
 "Load and indent file for the detected file type"
 filetype indent on
 
-"Set t-co=256"
+" set t_Co=256
 syntax on
 
 "Smart indentation"
 set autoindent              "Indent"
 set autoindent smartindent  "Smart indent"
 set expandtab
-set sw=2                    "Number of spaces after auto indent"
-set softtabstop=2
-set tabstop=2               "Number of spaces for tab"
+set sw=4                    "Number of spaces after auto indent"
+set softtabstop=4
+set tabstop=4               "Number of spaces for tab"
+set textwidth=80            "Max width of text"
 
 "Show the numbers of lines and cursor in the file"
 set number                  "Show number lines"
@@ -31,7 +32,7 @@ set ignorecase              "Ignores capital letters while searching"
 set smartcase               "Override ignore case if searching for capital letters"
 set showmode                "Shows the mode you are currently in Vim"
 set showmatch               "Matches parenthesis"
-set copyindent              "Copies last indent"
+" set copyindent              "Copies last indent"
 set hlsearch                "Highlights search"
 set bri                     "Preserves indentation in wrapped text"
 set sc
@@ -56,7 +57,7 @@ set listchars=tab:-.,nbsp:',trail:*,extends:>
 call plug#begin()
 
 "Fuzzy search of files"
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 "Create custom snippets"
@@ -87,7 +88,7 @@ Plug 'valloric/youcompleteme'
 "*** Color schemes for Vim ***"
 "gruvbox"
 Plug 'morhetz/gruvbox'
-"everforest"
+" everforest"
 Plug 'sainnhe/everforest'
 "molokai"
 Plug 'tomasr/molokai'
@@ -105,6 +106,9 @@ call plug#end()
 set background=dark
 " color gruvbox
 color everforest
+" color molokai
+" color sonokai
+" color srcery
 
 " MAPPINGS ----------------------------------------------------------------------------- {{{
 
@@ -141,12 +145,11 @@ nnoremap ue :UltiSnipsEdit!<cr> 2<cr>
 nnoremap <Leader>r :tabnew <cr>:Rg!<cr>
 
 "Open fuzzy search on a new tab"
-nnoremap <Leader>z :tabnew <cr>:FZF!<cr>
+nnoremap <Leader>z :tabnew <cr>:FZF<cr>
 
 "Open hunk preview window"
 inoremap <Leader>h <esc> :GitGutterPreviewHunk <cr>
 nnoremap <Leader>h :GitGutterPreviewHunk <cr>
-
 
 
 "*** Opening/moving/splitting tabs/files/buffers ***"
@@ -178,6 +181,12 @@ nnoremap [e :move -2 <cr>
 
 "Move a line down"
 nnoremap ]e :move +1 <cr>
+
+"Increase width"
+nnoremap <S-left> :vertical resize -1<cr>
+
+"Decrease width"
+nnoremap <S-right> :vertical resize +1<cr>
 
 "Switch to next file from the quickfix"
 nnoremap ]q :cnext<cr>
@@ -259,6 +268,24 @@ highlight GitgutterDelete guifg=#ff2222 ctermfg=Red
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
+
+
+"*** Ale Customization ***"
+let g:ale_virtualtext_cursor = 'current'
+
+
+"*** clang-tidy Customization ***"
+let g:ale_cpp_clangtidy_executable = 'clang-tidy-15'
+let g:ale_cpp_clangtidy_checks = [
+            \'-checks',
+            \'clang-analyzer-*',
+            \'cppcoreguidelines-*',
+            \'concurrency-*',
+            \'misc-*',
+            \'modernize-*',
+            \'-modernize-use-trailing-return-type',
+            \'performance-*',
+            \'readability-*']
 
 " }}}
 

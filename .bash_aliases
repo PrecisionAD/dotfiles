@@ -7,13 +7,19 @@ alias cpp='cd ~/hobbies/c++/'
 # Open .vimrc
 alias rc='vim ~/.vimrc'
 
-#alias to open this directory
+# Alias to open this directory
 alias ba='vim ~/.bash_aliases'
 
-#alias to update packages
+# Open games/
+alias tele='cd ~/hobbies/c++/games/telefunke'
+
+# Cuentas directory
+alias cuentas='cd ; cd /hobbies/c++/cuentas/build/ ; ./OutCuentas'
+
+# Alias to update packages
 alias update='echo timetocode | sudo -S apt-get update'
 
-#alias to upgrade packages
+# Alias to upgrade packages
 alias upgrade='echo timetocode | sudo -S apt-get upgrade'
 
 #-------------------Git Stuff----------------------
